@@ -107,9 +107,9 @@ struct ClipboardView: View {
         VStack(spacing: 12) {
             Image(systemName: store.query.isEmpty ? "doc.on.clipboard" : "magnifyingglass")
                 .font(.system(size: 32, weight: .light)).foregroundStyle(.tertiary)
-            Text(store.query.isEmpty ? "Ready when you copy" : "No matching clips")
+            Text(!store.isReady ? "Loading clipboard…" : store.query.isEmpty ? "Ready when you copy" : "No matching clips")
                 .font(.system(size: 15, weight: .medium))
-            Text(store.query.isEmpty ? "Copy text, links, images, or files.\nThey’ll be waiting here." : "Try another word or app name.")
+            Text(!store.isReady ? "Your saved clips will appear here." : store.query.isEmpty ? "Copy text, links, images, or files.\nThey’ll be waiting here." : "Try another word or app name.")
                 .font(.system(size: 12)).foregroundStyle(.secondary)
                 .multilineTextAlignment(.center).lineSpacing(3)
         }

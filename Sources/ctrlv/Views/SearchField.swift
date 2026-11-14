@@ -32,7 +32,8 @@ struct SearchField: NSViewRepresentable {
     }
     @MainActor final class Coordinator: NSObject, NSTextFieldDelegate {
         var parent: SearchField
-        var focusRequest = -1
+        // The store starts at zero; focus only after show() requests it.
+        var focusRequest = 0
         init(_ parent: SearchField) { self.parent = parent }
         func controlTextDidChange(_ notification: Notification) {
             guard let field = notification.object as? NSTextField else { return }

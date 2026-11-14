@@ -94,7 +94,9 @@ final class PanelController: NSObject, NSWindowDelegate {
         store.pasteService.refresh()
         let front = NSWorkspace.shared.frontmostApplication
         if front?.processIdentifier != ProcessInfo.processInfo.processIdentifier { previousApp = front }
-        store.monitor.poll()
+        // start() captures changes after history has loaded. Polling before then
+        // would advance the change counter without an installed capture handler.
+        if store.isReady { store.monitor.poll() }
         store.query = ""
         store.resetSelection()
         let screen = NSScreen.screens.first { NSMouseInRect(NSEvent.mouseLocation, $0.frame, false) } ?? NSScreen.main

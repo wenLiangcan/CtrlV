@@ -34,12 +34,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         hotKey.onPress = { [weak self] in self?.panelController?.toggle() }
         if !hotKey.register() { store.status = "Control+V is unavailable. Open ^V from the menu bar." }
         let shouldShowOnLaunch = Self.shouldShowOnLaunch(notification)
-        Task {
-            await store.start()
-            if shouldShowOnLaunch {
-                panelController?.show()
-            }
+        // Present the panel before disk I/O; history arrives without delaying search.
+        if shouldShowOnLaunch {
+            panelController?.show()
         }
+        Task { await store.start() }
     }
 
     static func shouldShowOnLaunch(
